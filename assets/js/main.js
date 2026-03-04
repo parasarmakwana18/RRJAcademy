@@ -10,6 +10,31 @@
   "use strict";
 
   /**
+   * Basic anti-inspect obstacles (not real security)
+   * - Disable right-click context menu
+   * - Block some common devtools keyboard shortcuts
+   */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    const key = e.key && e.key.toLowerCase();
+
+    if (
+      // F12
+      e.key === 'F12' ||
+      // Ctrl+Shift+I / J / C
+      (e.ctrlKey && e.shiftKey && (key === 'i' || key === 'j' || key === 'c')) ||
+      // Ctrl+U (view source)
+      (e.ctrlKey && !e.shiftKey && key === 'u')
+    ) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
+  /**
    * Apply .scrolled class to the body as the page is scrolled down
    */
   function toggleScrolled() {
